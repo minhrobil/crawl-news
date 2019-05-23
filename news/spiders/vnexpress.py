@@ -37,7 +37,8 @@ class QuotesSpider(scrapy.Spider):
         "du-lich":"Du lịch",
         "khoa-hoc":"Khoa học",
         "so-hoa":"Số hoá",
-        "oto-xe-may":"Xe"
+        "oto-xe-may":"Xe",
+        "bong-da":"Bóng đá"
     }
     cate = ""
     def start_requests(self):
@@ -72,17 +73,19 @@ class QuotesSpider(scrapy.Spider):
         author =  response.css('p.author_mail strong::text').get() 
         if not author:
             author = ' '.join(response.xpath('//p[@class="Normal"]/strong/text()').extract()[-1])
+        if not author:
+            author=''
         category = response.request.url.split('/')[3]
-
         category = self.dict_cate[category]
-        item.update({
-            "category":category,
-            "url":response.url,
-            "title":title,
-            "description":description,
-            "content":content,
-            "time":time,
-            "author":author
-        })
-        yield item
+        if('content'!=''):
+            item.update({
+                "category":category,
+                "url":response.url,
+                "title":title,
+                "description":description,
+                "content":content,
+                "time":time,
+                "author":author
+            })
+            yield item
 
