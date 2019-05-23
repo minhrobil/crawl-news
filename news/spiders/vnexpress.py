@@ -71,7 +71,7 @@ class QuotesSpider(scrapy.Spider):
         time = response.css('header.clearfix span.time::text').get()
         author =  response.css('p.author_mail strong::text').get() 
         if not author:
-            author = ' '.join(response.xpath('//p[@class="Normal"]/strong/text()').extract())
+            author = ' '.join(response.xpath('//p[@class="Normal"]/strong/text()').extract()[-1])
         category = response.request.url.split('/')[3]
 
         category = self.dict_cate[category]
